@@ -93,16 +93,66 @@ img{display:block;max-width:100%}
 .nav.light.scrolled a,.nav.light.scrolled .nav-logo{color:var(--text)}
 .nav.light.scrolled .hamburger span{background:var(--text)}
 
-/* Responsive */
+/* Responsive — Tablet */
+@media(max-width:1024px){
+  .nav{padding:20px 28px}
+  .nav-left{gap:18px}
+  .nav-left a{font-size:12px;letter-spacing:2px}
+  .nav-right a{font-size:12px;letter-spacing:2px}
+  .nav-logo{font-size:34px}
+  .collection-grid{gap:12px;padding:0 5%}
+  .collection-header{padding:0 5% 40px}
+}
+
+/* Responsive — Mobile */
 @media(max-width:768px){
-  .nav{padding:18px 20px}
-  .nav-left{gap:16px}
-  .nav-left a{font-size:9px;letter-spacing:2px}
-  .nav-right a{font-size:9px}
-  .collection-grid{grid-template-columns:repeat(2,1fr);gap:10px;padding:0 4%}
-  .collection-header{padding:0 4% 30px}
-  .hero-content{left:5%;bottom:14%}
-  .footer{flex-direction:column;gap:16px;text-align:center}
+  /* Nav: hide left links, keep logo + hamburger only */
+  .nav{padding:16px 20px}
+  .nav-left{display:none}
+  .nav-logo{position:static;transform:none;font-size:30px}
+  .nav-right a{display:none}
+  .nav-right{gap:0}
+
+  /* Dropdown full width on mobile */
+  .dropdown{width:100%;right:-100%}
+
+  /* Hero */
+  .hero{height:100svh}
+  .hero-img{object-position:center 30%}
+  .hero-overlay{background:linear-gradient(to top,rgba(42,36,32,.45) 0%,transparent 60%)}
+  .hero-content{left:24px;right:24px;bottom:12%;max-width:none}
+  .hero-brand{font-size:48px;margin-bottom:12px}
+  .hero-tagline{font-size:16px;margin-bottom:28px}
+
+  /* Collection */
+  .collection-page{padding-top:90px;padding-bottom:50px}
+  .collection-header{padding:0 20px 28px}
+  .collection-title{font-size:32px}
+  .collection-sub{font-size:14px}
+  .collection-grid{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 20px}
+
+  /* About */
+  .about-page{padding-top:70px}
+  .about-img{height:auto;min-height:60vh;object-fit:cover}
+
+  /* Footer */
+  .footer{flex-direction:column;gap:14px;text-align:center;padding:30px 20px}
+  .footer-left{order:3;font-size:10px}
+  .footer-center{order:1;font-size:14px}
+  .footer-right{order:2;gap:20px}
+}
+
+/* Responsive — Small phones */
+@media(max-width:380px){
+  .nav{padding:14px 16px}
+  .nav-logo{font-size:26px}
+  .hero-brand{font-size:40px}
+  .hero-tagline{font-size:14px}
+  .collection-grid{grid-template-columns:1fr 1fr;gap:6px;padding:0 14px}
+  .collection-header{padding:0 14px 20px}
+  .collection-title{font-size:28px}
+  .dropdown{padding:90px 30px 40px}
+  .dropdown a{font-size:22px;padding:14px 0}
 }
 </style>
 </head>
@@ -141,9 +191,9 @@ img{display:block;max-width:100%}
     <img src="images/main.png" alt="Anaé Spring Summer 2026" class="hero-img">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-brand fade-up"></h1>
-      <p class="hero-tagline fade-up fade-up-d1"></p>
-      <a class="hero-cta fade-up fade-up-d2" onclick="goTo('collection');return false"></a>
+      <h1 class="hero-brand fade-up">Anaé</h1>
+      <p class="hero-tagline fade-up fade-up-d1">soft presence, lasting memory</p>
+      <a class="hero-cta fade-up fade-up-d2" onclick="goTo('collection');return false">DISCOVER</a>
     </div>
   </section>
   <footer class="footer">
