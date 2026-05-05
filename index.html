@@ -1,10 +1,226 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Atelier Anae</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anaé — Atelier d'Anaé</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f5f0eb;--text:#2a2420;--text-light:#7a7068;--accent:#c9b8a8;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Josefin Sans','Helvetica Neue',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ═══ NAV ═══ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 40px;display:flex;align-items:center;justify-content:space-between;transition:background .4s}
+.nav.scrolled{background:rgba(245,240,235,.92);backdrop-filter:blur(12px)}
+.nav-left{display:flex;gap:32px;align-items:center}
+.nav-left a{font-family:var(--sans);font-size:15px;font-weight:400;letter-spacing:2.5px;text-transform:uppercase;transition:opacity .3s}
+.nav-left a:hover{opacity:.5}
+.nav-logo{font-family:var(--serif);font-size:40px;font-weight:400;letter-spacing:1px;position:absolute;left:50%;transform:translateX(-50%)}
+.nav-right{display:flex;align-items:center;gap:28px}
+.nav-right a{font-family:var(--sans);font-size:15px;font-weight:400;letter-spacing:2.5px;text-transform:uppercase;transition:opacity .3s}
+.nav-right a:hover{opacity:.5}
+
+/* Hamburger */
+.hamburger{width:28px;height:20px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;position:relative;z-index:1100}
+.hamburger span{display:block;width:100%;height:1.5px;background:var(--text);transition:all .35s cubic-bezier(.4,0,.2,1)}
+.hamburger.open span:first-child{transform:translateY(9px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:last-child{transform:translateY(-9px) rotate(-45deg)}
+
+/* Dropdown overlay */
+.dropdown{position:fixed;top:0;right:-360px;width:340px;height:100vh;background:var(--bg);z-index:1050;padding:100px 50px 50px;transition:right .45s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 40px rgba(0,0,0,.06)}
+.dropdown.open{right:0}
+.dropdown a{display:block;font-family:var(--serif);font-size:26px;font-weight:300;padding:18px 0;border-bottom:1px solid rgba(42,36,32,.08);transition:padding-left .3s,opacity .3s}
+.dropdown a:hover{padding-left:12px;opacity:.6}
+.dropdown-overlay{position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:1040;opacity:0;pointer-events:none;transition:opacity .35s}
+.dropdown-overlay.open{opacity:1;pointer-events:auto}
+
+/* ═══ PAGES ═══ */
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+/* ═══ HOME ═══ */
+.hero{position:relative;width:100%;height:100vh;overflow:hidden}
+.hero-img{width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(42,36,32,.25) 0%,transparent 60%)}
+.hero-content{position:absolute;bottom:18%;left:7%;max-width:480px}
+.hero-brand{font-family:var(--serif);font-size:clamp(56px,8vw,96px);font-weight:300;color:#fff;line-height:.95;letter-spacing:1px;margin-bottom:16px}
+.hero-tagline{font-family:var(--serif);font-size:clamp(16px,2vw,20px);font-weight:300;font-style:italic;color:rgba(255,255,255,.85);margin-bottom:36px;letter-spacing:.5px}
+.hero-cta{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:#fff;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.5);transition:border-color .3s;cursor:pointer}
+.hero-cta:hover{border-color:#fff}
+
+/* Footer */
+.footer{padding:40px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(42,36,32,.08)}
+.footer-left{font-size:11px;color:var(--text-light);letter-spacing:1px}
+.footer-center{font-family:var(--serif);font-size:15px;font-style:italic;color:var(--text-light);letter-spacing:.5px}
+.footer-right{display:flex;gap:24px}
+.footer-right a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);transition:color .3s}
+.footer-right a:hover{color:var(--text)}
+
+/* ═══ COLLECTION ═══ */
+.collection-page{padding-top:120px;padding-bottom:80px}
+.collection-header{padding:0 7% 50px}
+.collection-title{font-family:var(--serif);font-size:clamp(36px,5vw,52px);font-weight:300;margin-bottom:6px}
+.collection-sub{font-family:var(--serif);font-size:16px;font-weight:300;font-style:italic;color:var(--text-light)}
+.collection-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 7%}
+.collection-item{overflow:hidden;cursor:pointer;position:relative}
+.collection-item img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .8s cubic-bezier(.25,.46,.45,.94)}
+.collection-item:hover img{transform:scale(1.04)}
+
+/* ═══ ABOUT ═══ */
+.about-page{position:relative}
+.about-img{width:100%;height:100vh;object-fit:cover;object-position:center}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .9s cubic-bezier(.25,.46,.45,.94) both}
+.fade-up-d1{animation-delay:.1s}
+.fade-up-d2{animation-delay:.2s}
+.fade-up-d3{animation-delay:.3s}
+
+/* Nav color variants */
+.nav.light a,.nav.light .hamburger span{color:#fff}
+.nav.light .hamburger span{background:#fff}
+.nav.light .nav-logo{color:#fff}
+.nav.light.scrolled a,.nav.light.scrolled .nav-logo{color:var(--text)}
+.nav.light.scrolled .hamburger span{background:var(--text)}
+
+/* Responsive */
+@media(max-width:768px){
+  .nav{padding:18px 20px}
+  .nav-left{gap:16px}
+  .nav-left a{font-size:9px;letter-spacing:2px}
+  .nav-right a{font-size:9px}
+  .collection-grid{grid-template-columns:repeat(2,1fr);gap:10px;padding:0 4%}
+  .collection-header{padding:0 4% 30px}
+  .hero-content{left:5%;bottom:14%}
+  .footer{flex-direction:column;gap:16px;text-align:center}
+}
+</style>
 </head>
 <body>
-  <h1>Welcome to Atelier Anae</h1>
-  <p>This is a simple project website.</p>
+
+<!-- NAV -->
+<nav class="nav light" id="main-nav">
+  <div class="nav-left">
+    <a href="#" onclick="goTo('collection');return false">COLLECTION</a>
+    <a href="#">CONCEPT</a>
+    <a href="#" onclick="goTo('about');return false">ABOUT</a>
+    <a href="#">OBJECTS</a>
+  </div>
+  <a class="nav-logo" href="#" onclick="goTo('home');return false">Anaé</a>
+  <div class="nav-right">
+    <a href="#">JOURNAL</a>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Dropdown -->
+<div class="dropdown-overlay" id="dd-overlay" onclick="toggleMenu()"></div>
+<div class="dropdown" id="dropdown">
+  <a href="#" onclick="goTo('collection');toggleMenu();return false">Collection</a>
+  <a href="#">Concept</a>
+  <a href="#" onclick="goTo('about');toggleMenu();return false">About</a>
+  <a href="#">Objects</a>
+  <a href="#">Journal</a>
+</div>
+
+<!-- ═══ HOME PAGE ═══ -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <img src="images/main.png" alt="Anaé Spring Summer 2026" class="hero-img">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-brand fade-up"></h1>
+      <p class="hero-tagline fade-up fade-up-d1"></p>
+      <a class="hero-cta fade-up fade-up-d2" onclick="goTo('collection');return false"></a>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer-left">© 2026 Atelier d'Anaé</div>
+    <div class="footer-center"><em>a little love inside</em></div>
+    <div class="footer-right">
+      <a href="#">INSTAGRAM</a>
+      <a href="#">EMAIL</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══ COLLECTION PAGE ═══ -->
+<div class="page" id="page-collection">
+  <div class="collection-page">
+    <div class="collection-header">
+      <h1 class="collection-title">Collection</h1>
+      <p class="collection-sub">Spring / Summer 2026</p>
+    </div>
+    <div class="collection-grid" id="col-grid"></div>
+  </div>
+  <footer class="footer">
+    <div class="footer-left">© 2026 Atelier d'Anaé</div>
+    <div class="footer-center"><em>a little love inside</em></div>
+    <div class="footer-right">
+      <a href="#">INSTAGRAM</a>
+      <a href="#">EMAIL</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══ ABOUT PAGE ═══ -->
+<div class="page" id="page-about">
+  <div class="about-page">
+    <img src="images/about.png" alt="About Anaé" class="about-img">
+  </div>
+  <footer class="footer">
+    <div class="footer-left">© 2026 Atelier d'Anaé</div>
+    <div class="footer-center"><em>a little love inside</em></div>
+    <div class="footer-right">
+      <a href="#">INSTAGRAM</a>
+      <a href="#">EMAIL</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+// Build collection grid
+const grid=document.getElementById('col-grid');
+for(let i=1;i<=8;i++){
+  const d=document.createElement('div');
+  d.className='collection-item';
+  d.innerHTML=`<img src="images/collection-${i}.png" alt="Collection ${i}">`;
+  grid.appendChild(d);
+}
+
+// Navigation
+function goTo(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  window.scrollTo(0,0);
+  // Nav style
+  const nav=document.getElementById('main-nav');
+  if(page==='home'){nav.classList.add('light')}else{nav.classList.remove('light')}
+}
+
+// Hamburger menu
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('dropdown').classList.toggle('open');
+  document.getElementById('dd-overlay').classList.toggle('open');
+}
+
+// Nav scroll effect
+window.addEventListener('scroll',()=>{
+  document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>60);
+});
+</script>
 </body>
 </html>
